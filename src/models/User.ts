@@ -26,16 +26,19 @@ const userSchema = new mongoose.Schema(
     },
     plan: {
       type: String,
-      enum: ["regular", "premium", "pro"],
+      enum: ["Regular", "Premium", "Pro"],
+      default: "Regular",
     },
     photoURL: {
       type: String,
     },
     totalVideos: {
       type: Number,
+      default: 0,
     },
     totalSpaces: {
       type: Number,
+      default: 0,
     },
   },
   {
