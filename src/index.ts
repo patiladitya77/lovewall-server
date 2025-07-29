@@ -3,6 +3,7 @@ import connectDB from "./config/database";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import AuthRouter from "./routes/AuthRouter";
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -15,6 +16,8 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+app.use("/api/auth", AuthRouter);
 
 connectDB().then(() => {
   console.log("Connection established");
