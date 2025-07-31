@@ -74,3 +74,20 @@ export const createSpaceController = async (req: Request, res: Response) => {
     res.status(400).json({ message: "ERROR " + err });
   }
 };
+
+export const getSpaceByIdController = async (req: Request, res: Response) => {
+  try {
+    const auth = getAuth(req);
+    if (!auth.userId) {
+      return res.status(400).json({ message: "Unauthorised" });
+    }
+    const { spaceId } = req.params;
+    const space = await Space.findById({ _id: spaceId });
+    if (!space) {
+      return res.status(400).json({ message: "sapce not found" });
+    }
+    res.json({ message: "Fetched successfully", space });
+  } catch (err) {
+    res.status(400).json({ message: "ERROR: " + err });
+  }
+};
