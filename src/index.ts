@@ -4,8 +4,11 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import AuthRouter from "./routes/AuthRouter";
+import SpaceRouter from "./routes/SpaceRouter";
+import { clerkMiddleware } from "@clerk/express";
 dotenv.config();
 const app = express();
+app.use(clerkMiddleware());
 app.use(express.json());
 app.use(cookieParser());
 app.use(
@@ -18,6 +21,7 @@ app.use(
 );
 
 app.use("/api/auth", AuthRouter);
+app.use("/api/space", SpaceRouter);
 
 connectDB().then(() => {
   console.log("Connection established");
