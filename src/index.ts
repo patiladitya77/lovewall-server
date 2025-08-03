@@ -6,6 +6,7 @@ import cors from "cors";
 import AuthRouter from "./routes/AuthRouter";
 import SpaceRouter from "./routes/SpaceRouter";
 import { clerkMiddleware } from "@clerk/express";
+import TestimonialRouter from "./routes/TestimonialRouter";
 dotenv.config();
 const app = express();
 app.use(clerkMiddleware());
@@ -22,6 +23,7 @@ app.use(
 
 app.use("/api/auth", AuthRouter);
 app.use("/api/space", SpaceRouter);
+app.use("/api/testimonial", TestimonialRouter);
 
 connectDB().then(() => {
   console.log("Connection established");
