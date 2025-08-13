@@ -17,9 +17,41 @@ export const getTestimonialsController = async (
     }
     const { spaceId } = req.params;
     const feedback = await Testimonial.find({ spaceId: spaceId });
-    console.log(feedback);
     res.json({ message: "feedback fetched sucessfully", feedback });
   } catch (err) {
     res.status(400).json({ message: "error" + err });
+  }
+};
+
+export const sendTextTestimnonialController = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const auth = getAuth(req);
+
+    if (!auth.userId) {
+      return res
+        .status(401)
+        .json({ error: "Unauthorized. No userId in token." });
+    }
+    const { spaceId } = req.params;
+    const { starRating, feedback, name, email, type } = req.body;
+    const isSpaceExist = await Space.findById({ _id: spaceId });
+    if (!isSpaceExist) {
+      res.status(400).json({ message: "Space does not exists" });
+    }
+    const test = new Testimonial({
+      spaceId: spaceId,
+      starRating: starRating,
+      feedback: feedback,
+      feedbackType: type,
+      name: name,
+      senderEmail: email,
+    });
+    const savedTest = await test.save();
+    res.json({ message: "testimnonail saved successfully", savedTest });
+  } catch (error) {
+    res.status(400).json({ message: "error" + error });
   }
 };
