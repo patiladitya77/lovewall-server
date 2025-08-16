@@ -55,3 +55,33 @@ export const sendTextTestimnonialController = async (
     res.status(400).json({ message: "error" + error });
   }
 };
+
+export const sendVideoTestimonialController = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const auth = getAuth(req);
+    if (!auth.userId) {
+      return res.status(400).json({ message: "Unauthorised" });
+    }
+    const { spaceId } = req.params;
+    const isSpaceExist = await Space.findById({ _id: spaceId });
+    if (!isSpaceExist) {
+      return res.json({ message: "Space does not exits" });
+    }
+    const { videoUrl, name, email, starRating, feedback, feedbackType } =
+      req.body;
+    const test = new Testimonial({
+      name: name,
+      spaceId: spaceId,
+      starRating: starRating,
+      feedback: feedback,
+      feedbackType: feedbackType,
+      senderEmail: email,
+      videoUrl: videoUrl,
+    });
+    const savedTest = await test.save();
+    res.json({ message: "testimonail saved successfully", savedTest });
+  } catch (error) {}
+};

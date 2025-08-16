@@ -3,6 +3,7 @@ import { userAuth } from "../middlewares/userAuth";
 import {
   getTestimonialsController,
   sendTextTestimnonialController,
+  sendVideoTestimonialController,
 } from "../controllers/TestimonialController";
 const TestimonialRouter = express.Router();
 TestimonialRouter.get(
@@ -14,6 +15,11 @@ TestimonialRouter.post(
   "/sendtexttestimonial/:spaceId",
   userAuth,
   sendTextTestimnonialController
+);
+TestimonialRouter.post(
+  "/sendvideotestimonial/:spaceId",
+  userAuth,
+  sendVideoTestimonialController
 );
 
 export default TestimonialRouter;
