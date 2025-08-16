@@ -27,6 +27,9 @@ const testimonialSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  videoUrl: {
+    type: String,
+  },
   isArchived: {
     type: Boolean,
   },
