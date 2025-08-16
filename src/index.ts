@@ -1,12 +1,15 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express from "express";
 import connectDB from "./config/database";
-import dotenv from "dotenv";
+// import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import AuthRouter from "./routes/AuthRouter";
 import SpaceRouter from "./routes/SpaceRouter";
 import { clerkMiddleware } from "@clerk/express";
 import TestimonialRouter from "./routes/TestimonialRouter";
+import uploadRouter from "./routes/UploadRouter";
 dotenv.config();
 const app = express();
 app.use(clerkMiddleware());
@@ -24,6 +27,7 @@ app.use(
 app.use("/api/auth", AuthRouter);
 app.use("/api/space", SpaceRouter);
 app.use("/api/testimonial", TestimonialRouter);
+app.use("/api", uploadRouter);
 
 connectDB().then(() => {
   console.log("Connection established");
