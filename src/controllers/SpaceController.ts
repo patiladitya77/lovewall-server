@@ -91,3 +91,20 @@ export const getSpaceByIdController = async (req: Request, res: Response) => {
     res.status(400).json({ message: "ERROR: " + err });
   }
 };
+
+export const deleteSpaceController = async (req: Request, res: Response) => {
+  try {
+    const auth = getAuth(req);
+    if (!auth.userId) {
+      return res.status(400).json({ message: "Unauthorised" });
+    }
+    const { spaceId } = req.params;
+    const space = await Space.findByIdAndDelete(spaceId);
+
+    if (!space) {
+      return res.status(404).json({ message: "Space not found" });
+    }
+
+    res.json({ message: "Successfully deleted" });
+  } catch (error) {}
+};
