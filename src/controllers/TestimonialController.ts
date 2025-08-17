@@ -61,27 +61,24 @@ export const sendVideoTestimonialController = async (
   res: Response
 ) => {
   try {
-    const auth = getAuth(req);
-    if (!auth.userId) {
-      return res.status(400).json({ message: "Unauthorised" });
-    }
     const { spaceId } = req.params;
     const isSpaceExist = await Space.findById({ _id: spaceId });
     if (!isSpaceExist) {
       return res.json({ message: "Space does not exits" });
     }
-    const { videoUrl, name, email, starRating, feedback, feedbackType } =
-      req.body;
+    const { videoUrl, name, email, starRating, feedback, type } = req.body;
     const test = new Testimonial({
       name: name,
       spaceId: spaceId,
       starRating: starRating,
       feedback: feedback,
-      feedbackType: feedbackType,
+      feedbackType: type,
       senderEmail: email,
       videoUrl: videoUrl,
     });
     const savedTest = await test.save();
     res.json({ message: "testimonail saved successfully", savedTest });
-  } catch (error) {}
+  } catch (error) {
+    return res.status(400).json({ message: "error", error });
+  }
 };

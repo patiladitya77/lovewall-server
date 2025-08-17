@@ -13,12 +13,12 @@ TestimonialRouter.get(
 );
 TestimonialRouter.post(
   "/sendtexttestimonial/:spaceId",
-  userAuth,
+
   sendTextTestimnonialController
 );
 TestimonialRouter.post(
   "/sendvideotestimonial/:spaceId",
-  userAuth,
+
   sendVideoTestimonialController
 );
 
