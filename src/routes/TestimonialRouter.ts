@@ -1,6 +1,7 @@
 import express from "express";
 import { userAuth } from "../middlewares/userAuth";
 import {
+  deleteTestimonialController,
   getTestimonialsController,
   sendTextTestimnonialController,
   sendVideoTestimonialController,
@@ -20,6 +21,10 @@ TestimonialRouter.post(
   "/sendvideotestimonial/:spaceId",
 
   sendVideoTestimonialController
+);
+TestimonialRouter.delete(
+  "/deleteTestimonial/:testimonialId",
+  deleteTestimonialController
 );
 
 export default TestimonialRouter;

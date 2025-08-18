@@ -66,12 +66,11 @@ export const sendVideoTestimonialController = async (
     if (!isSpaceExist) {
       return res.json({ message: "Space does not exits" });
     }
-    const { videoUrl, name, email, starRating, feedback, type } = req.body;
+    const { videoUrl, name, email, starRating, type } = req.body;
     const test = new Testimonial({
       name: name,
       spaceId: spaceId,
       starRating: starRating,
-      feedback: feedback,
       feedbackType: type,
       senderEmail: email,
       videoUrl: videoUrl,
@@ -80,5 +79,29 @@ export const sendVideoTestimonialController = async (
     res.json({ message: "testimonail saved successfully", savedTest });
   } catch (error) {
     return res.status(400).json({ message: "error", error });
+  }
+};
+
+export const deleteTestimonialController = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const auth = getAuth(req);
+
+    if (!auth.userId) {
+      return res
+        .status(401)
+        .json({ error: "Unauthorized. No userId in token." });
+    }
+    const { testimonialId } = req.params;
+    const testimnonail = await Testimonial.findById(testimonialId);
+    if (!testimnonail) {
+      return res.status(400).json({ message: "Testimonial not found" });
+    }
+    await Testimonial.findByIdAndDelete(testimonialId);
+    res.json({ message: "Testimnonial deleted successfully" });
+  } catch (error) {
+    return res.status(400).json({ message: "ERROR: ", error });
   }
 };

@@ -12,7 +12,6 @@ const testimonialSchema = new mongoose.Schema({
   },
   feedback: {
     type: String,
-    required: true,
   },
   feedbackType: {
     type: String,
