@@ -2,6 +2,7 @@ import { clerkClient, getAuth } from "@clerk/express";
 import { Request, Response } from "express";
 import Space from "../models/Space";
 import Testimonial from "../models/Testimonial";
+import User from "../models/User";
 
 export const getTestimonialsController = async (
   req: Request,
@@ -66,6 +67,12 @@ export const sendVideoTestimonialController = async (
     if (!isSpaceExist) {
       return res.json({ message: "Space does not exits" });
     }
+    const { ownerId } = isSpaceExist;
+    const user = await User.findById({ _id: ownerId });
+    if (!user) {
+      return res.status(400).json({ message: "Owner does not exists" });
+    }
+
     const { videoUrl, name, email, starRating, type } = req.body;
     const test = new Testimonial({
       name: name,
@@ -76,6 +83,8 @@ export const sendVideoTestimonialController = async (
       videoUrl: videoUrl,
     });
     const savedTest = await test.save();
+    user.totalVideos++;
+    await user?.save();
     res.json({ message: "testimonail saved successfully", savedTest });
   } catch (error) {
     return res.status(400).json({ message: "error", error });
