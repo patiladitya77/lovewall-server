@@ -69,6 +69,8 @@ export const createSpaceController = async (req: Request, res: Response) => {
       slug: slug,
     });
     const savedSpace = await space.save();
+    user.totalSpaces++;
+    await user.save();
     res.json({ message: "Space cretaed successfully", savedSpace });
   } catch (err) {
     res.status(400).json({ message: "ERROR " + err });
