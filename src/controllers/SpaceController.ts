@@ -94,6 +94,22 @@ export const getSpaceByIdController = async (req: Request, res: Response) => {
   }
 };
 
+export const getSpaceForUserByIdController = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const { spaceId } = req.params;
+    const space = await Space.findById({ _id: spaceId });
+    if (!space) {
+      return res.status(400).json({ message: "sapce not found" });
+    }
+    res.json({ message: "Fetched successfully", space });
+  } catch (error) {
+    res.status(400).json({ message: "ERROR: " + error });
+  }
+};
+
 export const deleteSpaceController = async (req: Request, res: Response) => {
   try {
     const auth = getAuth(req);
