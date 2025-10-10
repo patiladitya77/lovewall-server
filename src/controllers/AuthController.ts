@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import User from "../models/User";
+import Space from "../models/Space";
 
 export const saveUserController = async (req: Request, res: Response) => {
   try {
@@ -11,7 +12,9 @@ export const saveUserController = async (req: Request, res: Response) => {
       res.json({ message: "User saved successfully", savedUser });
     } else {
       const savedUser = isUserPresent;
-      res.json({ message: "User is present", savedUser });
+      // console.log(savedUser);
+      const spaces = await Space.find({ ownerId: savedUser[0]._id });
+      res.json({ message: "User is present", savedUser, spaces });
     }
   } catch (err) {
     res.status(400).json({ message: "ERROR" + err });
