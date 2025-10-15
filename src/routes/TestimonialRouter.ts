@@ -3,6 +3,7 @@ import { userAuth } from "../middlewares/userAuth";
 import {
   deleteTestimonialController,
   getTestimonialsController,
+  likeTestimonialController,
   sendTextTestimnonialController,
   sendVideoTestimonialController,
 } from "../controllers/TestimonialController";
@@ -26,5 +27,6 @@ TestimonialRouter.delete(
   "/deleteTestimonial/:testimonialId",
   deleteTestimonialController
 );
+TestimonialRouter.post("/liketestimonial", userAuth, likeTestimonialController);
 
 export default TestimonialRouter;

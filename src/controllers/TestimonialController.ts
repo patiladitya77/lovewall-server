@@ -114,3 +114,54 @@ export const deleteTestimonialController = async (
     return res.status(400).json({ message: "ERROR: ", error });
   }
 };
+
+export const likeTestimonialController = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const auth = getAuth(req);
+
+    if (!auth.userId) {
+      return res
+        .status(401)
+        .json({ error: "Unauthorized. No userId in token." });
+    }
+
+    // If it's bulk, req.body.updates = [{ id, isLiked }]
+    const { updates, id, isLiked } = req.body;
+
+    //  Bulk update
+    if (updates && Array.isArray(updates)) {
+      const results = [];
+      for (const u of updates) {
+        const testimonial = await Testimonial.findById(u.id);
+        if (testimonial) {
+          testimonial.isLiked = u.isLiked;
+          await testimonial.save();
+          results.push({ id: u.id, isLiked: testimonial.isLiked });
+        }
+      }
+      return res.json({ message: "Bulk like status updated", results });
+    }
+
+    // Single update
+    if (id) {
+      const testimonial = await Testimonial.findById(id);
+      if (!testimonial) {
+        return res.status(400).json({ message: "Testimonial not found" });
+      }
+      testimonial.isLiked =
+        typeof isLiked === "boolean" ? isLiked : !testimonial.isLiked;
+      await testimonial.save();
+      return res.json({
+        message: "Testimonial like status updated",
+        testimonial,
+      });
+    }
+
+    return res.status(400).json({ message: "No valid data provided" });
+  } catch (err) {
+    res.status(400).json({ message: "error: " + err });
+  }
+};

@@ -35,6 +35,7 @@ const testimonialSchema = new mongoose.Schema(
     },
     isLiked: {
       type: Boolean,
+      default: false,
     },
   },
   {

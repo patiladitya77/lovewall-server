@@ -2,7 +2,6 @@ import { clerkClient, getAuth } from "@clerk/express";
 import { Request, Response } from "express";
 import User from "../models/User";
 import Space from "../models/Space";
-import { nanoid } from "nanoid";
 
 export const getSpacesController = async (req: Request, res: Response) => {
   try {
@@ -56,7 +55,7 @@ export const createSpaceController = async (req: Request, res: Response) => {
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
-    const slug = nanoid(5);
+    const slug = "abc";
     const space = new Space({
       spaceName: spaceName,
       spaceLogo: spaceLogo,
