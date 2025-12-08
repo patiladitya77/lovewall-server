@@ -10,6 +10,7 @@ import SpaceRouter from "./routes/SpaceRouter";
 import { clerkMiddleware } from "@clerk/express";
 import TestimonialRouter from "./routes/TestimonialRouter";
 import uploadRouter from "./routes/UploadRouter";
+import wallRouter from "./routes/WallRouter";
 dotenv.config();
 const app = express();
 app.use(clerkMiddleware());
@@ -17,7 +18,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "http://localhost:3000",
     methods: ["GET", "POST", "PATCH", "DELETE"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -28,6 +29,7 @@ app.use("/api/auth", AuthRouter);
 app.use("/api/space", SpaceRouter);
 app.use("/api/testimonial", TestimonialRouter);
 app.use("/api", uploadRouter);
+app.use("/api/wall", wallRouter);
 
 connectDB().then(() => {
   console.log("Connection established");
