@@ -7,14 +7,29 @@ export const createWallController = async (req: Request, res: Response) => {
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
-    const { name, wallType } = req.body;
+    const { name, wallType, darkMode, showMore } = req.body;
     const newWall = new Wall({
       name: name,
       wallType: wallType,
       ownerId: user._id,
+      darkMode: darkMode,
+      showMore: showMore,
     });
     const savedWall = await newWall.save();
     res.json({ message: "New Wall Created successfully", savedWall });
+  } catch (err) {
+    res.status(400).json({ message: "ERROR " + err });
+  }
+};
+
+export const getAllWalls = async (req: Request, res: Response) => {
+  try {
+    const user = req.user;
+    if (!user) {
+      return res.status(400).json({ message: "user not found" });
+    }
+    const walls = await Wall.find({ ownerId: user._id });
+    res.json({ message: "fetched succussfully", walls });
   } catch (err) {
     res.status(400).json({ message: "ERROR " + err });
   }

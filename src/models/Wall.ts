@@ -8,7 +8,15 @@ const wallSchema = new mongoose.Schema(
     },
     wallType: {
       type: String,
-      enum: ["mansory-animated", "mansory-fixed", "carousel-slider"],
+      enum: ["masonry-animated", "masonry-fixed", "carousel-slider"],
+    },
+    darkMode: {
+      type: Boolean,
+      required: true,
+    },
+    showMore: {
+      type: Boolean,
+      required: true,
     },
     ownerId: {
       type: mongoose.Schema.Types.ObjectId,
