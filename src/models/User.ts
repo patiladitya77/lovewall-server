@@ -1,6 +1,16 @@
 import mongoose from "mongoose";
 import validator from "validator";
-const userSchema = new mongoose.Schema(
+export interface IUser extends Document {
+  _id: string;
+  name: string;
+  email: string;
+  password?: string;
+  plan: "Regular" | "Premium" | "Pro";
+  photoURL?: string;
+  totalVideos: number;
+  totalSpaces: number;
+}
+const userSchema = new mongoose.Schema<IUser>(
   {
     name: {
       type: String,
