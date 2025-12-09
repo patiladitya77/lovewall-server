@@ -22,7 +22,7 @@ export const createWallController = async (req: Request, res: Response) => {
   }
 };
 
-export const getAllWalls = async (req: Request, res: Response) => {
+export const getAllWallsController = async (req: Request, res: Response) => {
   try {
     const user = req.user;
     if (!user) {
@@ -32,5 +32,24 @@ export const getAllWalls = async (req: Request, res: Response) => {
     res.json({ message: "fetched succussfully", walls });
   } catch (err) {
     res.status(400).json({ message: "ERROR " + err });
+  }
+};
+
+export const updateWallController = async (req: Request, res: Response) => {
+  try {
+    const { _id, name, darkMode, showMore } = req.body;
+
+    const wall = await Wall.findById(_id);
+    if (!wall) {
+      return res.status(400).json({ message: "wall not found" });
+    }
+    if (name !== undefined) wall.name = name;
+    if (darkMode !== undefined) wall.darkMode = darkMode;
+    if (showMore !== undefined) wall.showMore = showMore;
+    await wall.save();
+
+    res.json({ message: "wall updated successfully" });
+  } catch (error) {
+    res.status(400).json({ message: "ERROR " + error });
   }
 };

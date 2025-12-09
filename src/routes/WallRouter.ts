@@ -2,9 +2,11 @@ import express from "express";
 import { userAuth } from "../middlewares/userAuth";
 import {
   createWallController,
-  getAllWalls,
+  getAllWallsController,
+  updateWallController,
 } from "../controllers/Wallcontroller";
 const wallRouter = express.Router();
 wallRouter.post("/createwall", userAuth, createWallController);
-wallRouter.get("/getallwalls", userAuth, getAllWalls);
+wallRouter.get("/getallwalls", userAuth, getAllWallsController);
+wallRouter.patch("/updatewall/:wallid", userAuth, updateWallController);
 export default wallRouter;
