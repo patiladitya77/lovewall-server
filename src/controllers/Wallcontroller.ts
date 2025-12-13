@@ -37,9 +37,10 @@ export const getAllWallsController = async (req: Request, res: Response) => {
 
 export const updateWallController = async (req: Request, res: Response) => {
   try {
-    const { _id, name, darkMode, showMore } = req.body;
+    const { wallid } = req.params;
+    const { name, darkMode, showMore } = req.body;
 
-    const wall = await Wall.findById(_id);
+    const wall = await Wall.findById(wallid);
     if (!wall) {
       return res.status(400).json({ message: "wall not found" });
     }

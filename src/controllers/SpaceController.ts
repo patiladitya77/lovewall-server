@@ -125,3 +125,29 @@ export const deleteSpaceController = async (req: Request, res: Response) => {
     res.json({ message: "Successfully deleted" });
   } catch (error) {}
 };
+
+export const updateSpaceController = async (req: Request, res: Response) => {
+  try {
+    const { spaceId } = req.params;
+
+    const user = req.user;
+    if (!user) {
+      return res.status(400).json({ message: "unauthorised" });
+    }
+
+    const space = await Space.findById(spaceId);
+    if (space?.ownerId?.toString() !== user._id.toString()) {
+      return res
+        .status(403)
+        .json({ message: "space does not belong to the user" });
+    }
+
+    if (!space) {
+      return res.json({ message: "Space not found" });
+    }
+    space.set(req.body);
+    await space.save();
+  } catch (error) {
+    res.status(400).json({ message: "ERROR: " + error });
+  }
+};
